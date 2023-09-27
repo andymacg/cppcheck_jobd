@@ -1,5 +1,29 @@
 # jobd
 
+## Cppcheck bug
+
+This commit is to show a cppcheck bug that sometimes happens during a parallel cmake build with an addon.
+
+
+I was able to reproduce the bug on Linux with cppcheck 2.11.1 runing the following commands:
+```
+mkdir build
+cd build
+cmake ..
+make -j
+```
+
+Occasionally cppcheck output will be interrupted with this internal error:
+```
+:0:0: error: Bailing out from checking since there was an internal error: Internal error during whole program analysis: Failed to execute 'python3 /home/amacgregor/Projects/andy_tools/cppcheck/build_211/bin/addons/runaddon.py /home/amacgregor/Projects/andy_tools/cppcheck/build_211/bin/addons/misra.py --cli --file-list /home/amacgregor/Projects/andy_tools/jobd/cppcheck-addon-ctu-file-list'. Traceback (most recent call last): [internalError]
+```
+
+I think it is because there are multiple processes running that create and drestroy the cppcheck-addon-ctu-file-list file
+which isn't appended with a pid.
+
+This project is an arbitrary choice because its a multifile C project that isn't misra-compliant
+with CMake as the build system and minimal dependencies.
+
 ## IMPORTANT NOTICE
 
 Development of this project has been paused indefinitely.
