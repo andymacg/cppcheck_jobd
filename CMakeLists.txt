@@ -39,6 +39,11 @@ set_target_properties(static_sqlite
         PROPERTIES
         COMPILE_FLAGS "-DSQLITE_THREADSAFE=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_ENABLE_JSON1 -w")
 
+set(CMAKE_C_CPPCHECK
+        "cppcheck"
+        "--enable=style"
+        "--addon=misra")
+
 #
 # Local sources
 #
@@ -160,3 +165,5 @@ add_test(NAME run
 
 configure_file(config.h.in config.h @ONLY)
 configure_file(config.inc.in config.inc @ONLY)
+
+include_directories(${CMAKE_BINARY_DIR})
